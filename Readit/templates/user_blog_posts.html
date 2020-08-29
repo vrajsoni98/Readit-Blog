@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block content %}
+
+  <div class="content-section">
+       <div class="media">
+         <img class="rounded-circle account-img" src="{{ url_for('static', filename='profile_pics/' + user.profile_image) }}">
+         <div class="media-body">
+           <h2 class="account-heading">{{ user.username }}</h2>
+           <p class="text-secondary">{{ user.email }}</p>
+           <p class="text-secondary">Total Post by {{ user.username }} = {{ blog_posts.total }} </p>
+         </div>
+       </div>
+
+
+  <div class="container">
+    {% for post in blog_posts.items %}
+
+    <article class="media content-section">
+    <div class="media-body">
+      <div class="article-metadata">
+        <a class="mr-2" href="{{url_for('users.user_posts',username=post.author.username)}}">{{post.author.username}}</a>
+        <small class="text-muted">{{post.date.strftime('%d %B, %Y')}}</small>
+      </div>
+      <h2><a class="article-title" href="{{url_for('blog_posts.blog_post',blog_post_id=post.id)}}">{{ post.title }}</a></h2>
+      <p class="article-content">{{ post.text }}</p>
+    </div>
+    </article>
+
+
+    {% endfor %}
+
+  </div>
+
+  <div class="pagination justify-content-center">
+
+
+      {% for page_num in blog_posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+            {% if page_num %}
+              {% if blog_posts.page == page_num %}
+                <a class="btn btn-info mb-4 page-item disabled" href="{{url_for('core.index',page=page_num)}}">{{ page_num }}</a>&nbsp;
+              {% else %}
+                <a class="btn btn-outline-info mb-4" href="{{url_for('core.index',page=page_num)}}">{{ page_num }}</a>&nbsp;
+              {% endif %}
+            {% else %}
+              ...
+            {% endif %}
+          {% endfor %}
+
+  </div>
+  {% endblock %}

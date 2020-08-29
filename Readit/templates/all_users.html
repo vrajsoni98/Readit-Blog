@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="list-group">
+  {% for user in users %}
+  <a href="{{url_for('users.user_posts',username=user.username)}}" class="list-group-item list-group-item-action ">
+    {{user.username}} : Total Blogs = {{user.post|length}}
+  </a>
+  {% endfor %}
+
+
+</div>
+
+{% endblock %}
